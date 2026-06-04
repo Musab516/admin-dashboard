@@ -62,17 +62,19 @@ Password: Test@1234
 4. Fill in `.env.local` with your Supabase credentials:
 VITE_SUPABASE_URL=your-supabase-url
 VITE_SUPABASE_ANON_KEY=your-anon-key
-5. Run the schema migration in Supabase SQL Editor:
+5. In Supabase dashboard go to **Settings → Data API → Exposed tables** and toggle ON: `organizations`, `organization_members`, `profiles`
+
+6. Run the schema migration in Supabase SQL Editor:
    - Copy contents of `supabase/migrations/20260604000000_initial_schema.sql`
    - Paste and run in your Supabase project SQL Editor
 
-6. Deploy the Edge Function:
+7. Deploy the Edge Function:
 ```bash
    supabase link --project-ref your-project-ref
    supabase functions deploy invite-member
 ```
 
-7. Start the dev server:
+8. Start the dev server:
 ```bash
    npm run dev
 ```
