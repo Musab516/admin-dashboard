@@ -4,7 +4,7 @@ A production-minded admin dashboard built with React + Supabase. Admins can crea
 
 ## Live URLs
 
-- **Production**: https://admin-dashboard-37og5n4pr-musab-bin-majids-projects.vercel.app
+- **Production**: https://admin-dashboard-gamma-khaki.vercel.app
 - **Development Preview**: deployed from the `development` branch on Vercel
 
 ## Test Credentials
