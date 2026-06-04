@@ -6,6 +6,7 @@ import { Login } from '@/pages/Login'
 import { Signup } from '@/pages/Signup'
 import { Dashboard } from '@/pages/Dashboard'
 import { OrgDetail } from '@/pages/OrgDetail'
+import { NotFound } from '@/pages/NotFound'
 import { Toaster } from '@/components/ui/toaster'
 
 export default function App() {
@@ -20,7 +21,7 @@ export default function App() {
             <Route path='dashboard' element={<Dashboard />} />
             <Route path='orgs/:id' element={<OrgDetail />} />
           </Route>
-          <Route path='*' element={<Navigate to='/dashboard' replace />} />
+          <Route path='*' element={<NotFound />} />
         </Routes>
         <Toaster />
       </AuthProvider>
