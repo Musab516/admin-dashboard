@@ -1,3 +1,4 @@
+import React from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
@@ -12,7 +13,19 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowLeft, Mail, Users, GraduationCap, Heart, Briefcase, Clock, CheckCircle } from 'lucide-react'
 
-const typeConfig: Record<string, { label: string; color: string; bg: string; icon: any }> = {
+
+interface Member {
+  id: string
+  email: string
+  status: string
+  role: string
+  invited_at: string
+  joined_at: string | null
+  organization_id: string
+  user_id: string | null
+}
+
+const typeConfig: Record<string, { label: string; color: string; bg: string; icon: React.ElementType }> = {
   school:    { label: 'School',    color: 'text-blue-700',    bg: 'bg-blue-50 border-blue-200',    icon: GraduationCap },
   nonprofit: { label: 'Nonprofit', color: 'text-emerald-700', bg: 'bg-emerald-50 border-emerald-200', icon: Heart },
   business:  { label: 'Business',  color: 'text-violet-700',  bg: 'bg-violet-50 border-violet-200',  icon: Briefcase },
@@ -87,7 +100,7 @@ export function OrgDetail() {
       toast({ title: 'Invitation sent!', description: 'Member has been invited.' })
       reset()
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       toast({ title: 'Error', description: err.message, variant: 'destructive' })
     },
   })
@@ -102,7 +115,7 @@ export function OrgDetail() {
       navigate('/dashboard')
       toast({ title: 'Organization deleted' })
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       toast({ title: 'Error', description: err.message, variant: 'destructive' })
     },
   })
@@ -184,7 +197,7 @@ export function OrgDetail() {
           )}
 
           <div className='space-y-2'>
-            {members?.map((member: any) => (
+            {members?.map((member: Member) => (
               <div key={member.id} className='flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl hover:border-slate-300 transition-colors'>
                 <div className='flex items-center gap-3'>
                   <div className='w-9 h-9 bg-indigo-50 rounded-full flex items-center justify-center'>

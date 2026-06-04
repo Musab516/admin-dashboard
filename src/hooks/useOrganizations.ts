@@ -27,7 +27,7 @@ export function useOrganizations() {
         .eq('created_by', user!.id)
         .order('created_at', { ascending: false })
       if (error) throw error
-      return (data ?? []).map((org: any) => ({
+      return (data ?? []).map((org: Organization & { organization_members: { count: number }[] }) => ({
         ...org,
         member_count: org.organization_members?.[0]?.count ?? 0,
       })) as Organization[]

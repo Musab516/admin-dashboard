@@ -54,7 +54,7 @@ export function CreateOrgDialog() {
       reset()
       setOpen(false)
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       toast({ title: 'Error', description: err.message, variant: 'destructive' })
     },
   })

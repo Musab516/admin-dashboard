@@ -1,10 +1,11 @@
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useOrganizations } from '@/hooks/useOrganizations'
 import { CreateOrgDialog } from '@/components/CreateOrgDialog'
 import { Card, CardContent } from '@/components/ui/card'
 import { Building2, Users, Calendar, ChevronRight, GraduationCap, Heart, Briefcase } from 'lucide-react'
 
-const typeConfig: Record<string, { label: string; color: string; bg: string; icon: any }> = {
+const typeConfig: Record<string, { label: string; color: string; bg: string; icon: React.ElementType }> = {
   school:    { label: 'School',    color: 'text-blue-700',   bg: 'bg-blue-50 border-blue-200',   icon: GraduationCap },
   nonprofit: { label: 'Nonprofit', color: 'text-emerald-700', bg: 'bg-emerald-50 border-emerald-200', icon: Heart },
   business:  { label: 'Business',  color: 'text-violet-700', bg: 'bg-violet-50 border-violet-200', icon: Briefcase },
