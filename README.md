@@ -9,8 +9,8 @@ A production-minded admin dashboard built with React + Supabase. Admins can crea
 
 ## Test Credentials
 
-Email: `musabsiddiqui05@gmail.com`
-Password: (provided separately)
+Email: `admin.test@gmail.com`
+Password: Test@1234
 
 ## Tech Stack
 
