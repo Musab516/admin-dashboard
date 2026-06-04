@@ -1,73 +1,101 @@
-# React + TypeScript + Vite
+# Admin Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A production-minded admin dashboard built with React + Supabase. Admins can create organizations, invite members, and manage their organization directory.
 
-Currently, two official plugins are available:
+## Live URLs
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Production**: https://admin-dashboard-37og5n4pr-musab-bin-majids-projects.vercel.app
+- **Development Preview**: deployed from the `development` branch on Vercel
 
-## React Compiler
+## Test Credentials
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Email: `musabsiddiqui05@gmail.com`
+Password: (provided separately)
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React 18 + TypeScript (strict mode)
+- Vite with SWC
+- React Router v6
+- Tailwind CSS + shadcn/ui (manual setup)
+- TanStack React Query
+- React Hook Form + Zod
+- Supabase (Auth, Postgres, Edge Functions, RLS)
+- Vercel (deployment)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Admin sign-up / sign-in with Supabase Auth
+- Protected routes — unauthenticated users redirected to login
+- Create organizations with 3 types: School, Nonprofit, Business
+- Conditional fields per type (School District, Registration Number, Industry Sector)
+- Invite members by email via Supabase Edge Function
+- Members list with invited/active status badges
+- Organization directory with type badges and member counts
+- Delete organizations
+- Full RLS — admins can only access their own data
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Branching Strategy
+
+- `main` — production branch, deployed to Vercel Production
+- `development` — default working branch, deployed to Vercel Preview
+- Feature branches off `development`, merged via pull request
+
+## Setup
+
+1. Clone the repo
+```bash
+   git clone git@github.com:Musab516/admin-dashboard.git
+   cd admin-dashboard
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Install dependencies
+```bash
+   npm install
 ```
+
+3. Copy environment variables
+```bash
+   cp .env.example .env.local
+```
+
+4. Fill in `.env.local` with your Supabase credentials:
+VITE_SUPABASE_URL=your-supabase-url
+VITE_SUPABASE_ANON_KEY=your-anon-key
+5. Run the schema migration in Supabase SQL Editor:
+   - Copy contents of `supabase/migrations/20260604000000_initial_schema.sql`
+   - Paste and run in your Supabase project SQL Editor
+
+6. Deploy the Edge Function:
+```bash
+   supabase link --project-ref your-project-ref
+   supabase functions deploy invite-member
+```
+
+7. Start the dev server:
+```bash
+   npm run dev
+```
+
+## Data Model
+
+- `profiles` — linked to auth.users, stores full_name and is_admin flag
+- `organizations` — name, type (school/nonprofit/business), created_by, type-specific fields
+- `organization_members` — email, status (invited/active), role, linked to org
+
+## RLS Policies
+
+All tables have RLS enabled. Admins can only read/write organizations they created. Members are only accessible through orgs the admin owns.
+
+## Edge Function
+
+`supabase/functions/invite-member` validates the caller's JWT, verifies org ownership, checks for duplicate invitations, and inserts the member record. Email delivery is stubbed with a TODO comment for plugging in Resend/SendGrid.
+
+## Tradeoffs & What I'd Do With More Time
+
+- Add actual email delivery via Resend
+- Implement invitation acceptance flow (invited user clicks link, signs up, member row gets linked)
+- Add search/filter on the organization directory
+- Role-based permissions within orgs (admin vs member)
+- End-to-end tests with Playwright
+- Better error boundaries and offline handling
